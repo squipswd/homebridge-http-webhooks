@@ -92,7 +92,7 @@ HttpWebHooksPlatform.prototype = {
         response.statusCode = 200;
         response.setHeader('Content-Type', 'application/json');
 
-        if (!theUrlParams.accessoryId) {
+        if (!theUrlParams.accessoryid) {
           response.statusCode = 404;
           response.setHeader("Content-Type", "text/plain");
           var errorText = "[ERROR Http WebHook Server] No accessoryId in request.";
@@ -104,7 +104,7 @@ HttpWebHooksPlatform.prototype = {
           var responseBody = {
             success : true
           };
-          var accessoryId = theUrlParams.accessoryId;
+          var accessoryId = theUrlParams.accessoryid;
           for (var i = 0; i < accessoriesCount; i++) {
             var accessory = accessories[i];
             if (accessory.id === accessoryId) {
@@ -394,7 +394,8 @@ HttpWebHookSwitchAccessory.prototype.setState = function(powerOn, callback, cont
         callback(null);
       }
       else {
-        callback(err || new Error("Request to '" + urlToCall + "' was not succesful."));
+//        callback(err || new Error("Request to '" + urlToCall + "' was not succesful."));
+	callback(null);
       }
     }).bind(this));
   }
@@ -443,7 +444,7 @@ HttpWebHookPushButtonAccessory.prototype.setState = function(powerOn, callback, 
     callback(null);
     setTimeout(function() {
       this.service.getCharacteristic(Characteristic.On).updateValue(false, undefined, CONTEXT_FROM_TIMEOUTCALL);
-    }.bind(this), 1000);
+    }.bind(this), 10);
   }
   else {
     var urlToCall = this.pushURL;
@@ -459,11 +460,12 @@ HttpWebHookPushButtonAccessory.prototype.setState = function(powerOn, callback, 
         callback(null);
       }
       else {
-        callback(err || new Error("Request to '" + urlToCall + "' was not succesful."));
+//        callback(err || new Error("Request to '" + urlToCall + "' was not succesful."));
+	callback(null);
       }
       setTimeout(function() {
         this.service.getCharacteristic(Characteristic.On).updateValue(false, undefined, CONTEXT_FROM_TIMEOUTCALL);
-      }.bind(this), 1000);
+      }.bind(this), 10);
     }).bind(this));
   }
 };
